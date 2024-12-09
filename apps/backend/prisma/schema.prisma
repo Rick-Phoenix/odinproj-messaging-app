@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                     Int             @id @default(autoincrement())
+  username               String          @unique
+  email                  String          @unique
+  hash                   String
+  salt                   String
+  friendsIds             Int[]
+  outgoingFriendRequests FriendRequest[] @relation("Outgoing Requests")
+  incomingFriendRequests FriendRequest[] @relation("Incoming Requests")
+  chatInstances          ChatInstance[]
+  messages               Message[]
+}
+
+model FriendRequest {
+  user1   User @relation("Outgoing Requests", fields: [user1Id], references: [id])
+  user1Id Int
+  user2   User @relation("Incoming Requests", fields: [user2Id], references: [id])
+  user2Id Int
+
+  @@id([user1Id, user2Id])
+}
+
+model Chat {
+  id              Int            @id @default(autoincrement())
+  name            String?
+  messages        Message[]
+  instances       ChatInstance[]
+  participantsIds Int[]
+}
+
+model Message {
+  id     Int      @id @default(autoincrement())
+  user   User     @relation(fields: [userId], references: [id])
+  userId Int
+  chat   Chat     @relation(fields: [chatId], references: [id])
+  chatId Int
+  sentAt DateTime @default(now())
+}
+
+model ChatInstance {
+  userId Int
+  chatId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chat   Chat @relation(fields: [chatId], references: [id])
+
+  @@id([userId, chatId])
+}
