@@ -86,6 +86,7 @@ export async function fetchUserData(userId) {
       id: userId,
     },
     select: {
+      profile: true,
       username: true,
       friends: {
         select: {
@@ -106,6 +107,7 @@ export async function fetchUserData(userId) {
             select: {
               username: true,
               email: true,
+              id: true,
             },
           },
         },
@@ -128,10 +130,10 @@ export async function fetchUserData(userId) {
   return userData;
 }
 
-export async function addAcceptedFriendRequest(userId, friendEmail) {
+export async function addAcceptedFriendRequest(userId, friendId) {
   const updatedFriend = await prisma.user.update({
     where: {
-      email: friendEmail,
+      id: friendId,
     },
     data: {
       friends: {
@@ -145,13 +147,64 @@ export async function addAcceptedFriendRequest(userId, friendEmail) {
   const acceptedRequest = await prisma.friendRequest.delete({
     where: {
       user1Id_user2Id: {
-        user1Id: updatedFriend.id,
+        user1Id: friendId,
         user2Id: userId,
       },
     },
   });
 
   return true;
+}
+
+export async function setRejectedFriendRequest(userId, requestingUserId) {
+  const updatedRequest = await prisma.friendRequest.update({
+    where: {
+      user1Id_user2Id: {
+        user1Id: requestingUserId,
+        user2Id: userId,
+      },
+    },
+    data: {
+      status: "Rejected",
+    },
+  });
+
+  return true;
+}
+
+export async function fetchProfile(username) {
+  const user = await prisma.user.findFirst({
+    where: {
+      username,
+    },
+    select: {
+      profile: true,
+    },
+  });
+
+  if (!user) return false;
+  else return user.profile;
+}
+
+export async function addOrEditProfile(userId, name, status, bio) {
+  const profile = await prisma.profile.upsert({
+    where: {
+      userId,
+    },
+    create: {
+      userId,
+      name,
+      status,
+      ...(bio && { bio }),
+    },
+    update: {
+      name,
+      status,
+      ...(bio && { bio }),
+    },
+  });
+
+  return profile;
 }
 
 async function disconnectFriend() {

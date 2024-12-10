@@ -22,7 +22,7 @@ export function getToken() {
 
 export async function postRequestWithToken(formData, apiRoute) {
   const formObj = Object.fromEntries(formData);
-  const token = localStorage.getItem("JWT");
+  const token = getToken();
   const response = await fetch(`${apiUrl}${apiRoute}`, {
     method: "POST",
     headers: {
@@ -37,33 +37,35 @@ export async function postRequestWithToken(formData, apiRoute) {
   return { ok: response.ok, msg: resData };
 }
 
-export const UserContext = createContext(null);
+export async function putRequestWithToken(formData, apiRoute) {
+  const formObj = Object.fromEntries(formData);
+  const token = getToken();
+  const response = await fetch(`${apiUrl}${apiRoute}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(formObj),
+  });
 
-export function useFetchUser() {
-  const [refresh, setRefresh] = useState(true);
-  const [userData, setUserData] = useState(null);
+  const resData = await response.json();
 
-  useEffect(() => {
-    if (refresh) {
-      const token = getToken();
-      if (token) {
-        async function getData() {
-          const response = await fetch(`${apiUrl}/user`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          const responseData = await response.json();
-          setRefresh(false);
-          setUserData({ ...responseData });
-        }
-
-        getData();
-      }
-    }
-  }, [refresh]);
-
-  return { userData, setRefresh };
+  return { ok: response.ok, msg: resData };
 }
+
+export async function getRequestWithToken(apiRoute) {
+  const token = getToken();
+  const response = await fetch(`${apiUrl}${apiRoute}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const resData = await response.json();
+
+  return { ok: response.ok, data: resData };
+}
+
+export const UserContext = createContext(null);

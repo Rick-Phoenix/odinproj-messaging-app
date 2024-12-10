@@ -3,6 +3,7 @@ import AddFriend from "./AddFriend.jsx";
 import FriendRequests from "./FriendRequests.jsx";
 import { UserContext } from "../utils.js";
 import { use } from "react";
+import Friends from "./Friends.jsx";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -19,8 +20,17 @@ export default function Dashboard() {
       <button type="button" onClick={handleLogout}>
         Log Out
       </button>
+      <button
+        type="button"
+        onClick={() => {
+          navigate(`/profile/myProfile`);
+        }}
+      >
+        View My Profile
+      </button>
       <AddFriend />
       <FriendRequests />
+      <Friends />
     </>
   );
 }

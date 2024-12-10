@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import "./App.css";
-import { getToken, useFetchUser, UserContext } from "../utils.js";
+import { getToken, UserContext } from "../utils.js";
 
 import Dashboard from "./Dashboard.jsx";
+import { use } from "react";
 
 function App() {
   const token = getToken();
-  const { userData, setRefresh } = useFetchUser();
+  const { userData, setRefresh } = use(UserContext);
   console.log(userData);
 
   return (
@@ -23,11 +24,7 @@ function App() {
         </div>
       )}
 
-      {userData && (
-        <UserContext value={{ userData, setRefresh }}>
-          <Dashboard />
-        </UserContext>
-      )}
+      {userData && <Dashboard />}
     </>
   );
 }

@@ -3,12 +3,15 @@ import { checkPassword, genPassword } from "../auth/passwordUtils.js";
 import jwt from "jsonwebtoken";
 import {
   addAcceptedFriendRequest,
+  addOrEditProfile,
   createFriendRequest,
   createUser,
+  fetchProfile,
   fetchUserData,
   getUserByUsername,
   isEmailTaken,
   isUsernameTaken,
+  setRejectedFriendRequest,
 } from "../prisma/queries.js";
 const secretKey = process.env.JWT_SECRET;
 
@@ -128,7 +131,33 @@ export async function initiateFriendRequest(req, res) {
 export async function acceptFriendRequest(req, res) {
   const acceptedRequest = await addAcceptedFriendRequest(
     req.user.userId,
-    req.body.email
+    +req.body.friendId
   );
   if (acceptedRequest) return res.json("Request accepted.");
+}
+
+export async function rejectFriendRequest(req, res) {
+  const rejectedRequest = await setRejectedFriendRequest(
+    req.user.userId,
+    +req.body.friendId
+  );
+
+  if (rejectedRequest) return res.json("Friend request rejected correctly.");
+}
+
+export async function getProfile(req, res) {
+  const profile = await fetchProfile(req.params.username);
+
+  if (profile === false) return res.status(400).json("No profile found.");
+  if (profile === null)
+    return res.status(400).json("This user does not have a profile yet.");
+  else res.json(profile);
+}
+
+export async function createOrEditProfile(req, res) {
+  const { name, status, bio } = req.body;
+  const profile = await addOrEditProfile(req.user.userId, name, status, bio);
+
+  if (!profile) return res.status(400);
+  else res.json("Profile updated successfully.");
 }
