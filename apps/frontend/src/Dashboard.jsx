@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
+import AddFriend from "./AddFriend.jsx";
+import FriendRequests from "./FriendRequests.jsx";
 import { UserContext } from "../utils.js";
 import { use } from "react";
-import AddFriend from "./AddFriend.jsx";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const user = use(UserContext);
+  const { userData } = use(UserContext);
 
   function handleLogout() {
     localStorage.removeItem("JWT");
@@ -14,11 +15,12 @@ export default function Dashboard() {
 
   return (
     <>
-      <h1>Hello, {user.username}!</h1>
+      <h1>Hello, {userData.username}!</h1>
       <button type="button" onClick={handleLogout}>
         Log Out
       </button>
       <AddFriend />
+      <FriendRequests />
     </>
   );
 }

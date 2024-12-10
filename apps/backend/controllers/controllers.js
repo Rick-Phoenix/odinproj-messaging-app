@@ -2,6 +2,7 @@ import { body, validationResult } from "express-validator";
 import { checkPassword, genPassword } from "../auth/passwordUtils.js";
 import jwt from "jsonwebtoken";
 import {
+  addAcceptedFriendRequest,
   createFriendRequest,
   createUser,
   fetchUserData,
@@ -122,4 +123,12 @@ export async function initiateFriendRequest(req, res) {
   );
   if (friendRequest?.error) return res.status(400).json(friendRequest.error);
   return res.json("Request sent.");
+}
+
+export async function acceptFriendRequest(req, res) {
+  const acceptedRequest = await addAcceptedFriendRequest(
+    req.user.userId,
+    req.body.email
+  );
+  if (acceptedRequest) return res.json("Request accepted.");
 }

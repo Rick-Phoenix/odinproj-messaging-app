@@ -10,7 +10,7 @@ export default function AddFriend() {
   ) {
     const response = await postRequestWithToken(
       formData,
-      "/user/addFriendRequest"
+      "/user/friendRequest/new"
     );
     setFeedbackMsg(response.msg);
     return response;

@@ -1,30 +1,13 @@
 import { Link } from "react-router-dom";
 import "./App.css";
-import { apiUrl, getToken, UserContext } from "../utils.js";
-import { useEffect, useState } from "react";
+import { getToken, useFetchUser, UserContext } from "../utils.js";
+
 import Dashboard from "./Dashboard.jsx";
 
 function App() {
   const token = getToken();
-  const [userData, setUserData] = useState(null);
-
-  useEffect(() => {
-    if (token) {
-      async function getData() {
-        const response = await fetch(`${apiUrl}/user`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const responseData = await response.json();
-        setUserData({ ...responseData });
-      }
-
-      getData();
-    }
-  }, [token]);
+  const { userData, setRefresh } = useFetchUser();
+  console.log(userData);
 
   return (
     <>
@@ -41,7 +24,7 @@ function App() {
       )}
 
       {userData && (
-        <UserContext value={userData}>
+        <UserContext value={{ userData, setRefresh }}>
           <Dashboard />
         </UserContext>
       )}

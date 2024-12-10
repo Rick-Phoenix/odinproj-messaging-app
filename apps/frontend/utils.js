@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-import { createContext } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -38,3 +38,32 @@ export async function postRequestWithToken(formData, apiRoute) {
 }
 
 export const UserContext = createContext(null);
+
+export function useFetchUser() {
+  const [refresh, setRefresh] = useState(true);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    if (refresh) {
+      const token = getToken();
+      if (token) {
+        async function getData() {
+          const response = await fetch(`${apiUrl}/user`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          const responseData = await response.json();
+          setRefresh(false);
+          setUserData({ ...responseData });
+        }
+
+        getData();
+      }
+    }
+  }, [refresh]);
+
+  return { userData, setRefresh };
+}

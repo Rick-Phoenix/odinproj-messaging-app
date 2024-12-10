@@ -3,6 +3,7 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import {
+  acceptFriendRequest,
   getUserData,
   initiateFriendRequest,
   signUpValidationChain,
@@ -24,7 +25,8 @@ app.use("/user", validateToken);
 
 app.post("/signup", signUpValidationChain);
 app.post("/login", validateLogin);
-app.post("/user/addFriendRequest", initiateFriendRequest);
+app.post("/user/friendRequest/new", initiateFriendRequest);
+app.post("/user/friendRequest/accept", acceptFriendRequest);
 
 app.get("/user", getUserData);
 

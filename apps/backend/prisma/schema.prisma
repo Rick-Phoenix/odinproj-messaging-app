@@ -13,28 +13,41 @@ model User {
   email                  String          @unique
   hash                   String
   salt                   String
-  friendsIds             Int[]
+  friends                User[]          @relation("Friends")
+  friendOf               User[]          @relation("Friends")
   outgoingFriendRequests FriendRequest[] @relation("Outgoing Requests")
   incomingFriendRequests FriendRequest[] @relation("Incoming Requests")
+  chats                  Chat[]
   chatInstances          ChatInstance[]
   messages               Message[]
 }
 
 model FriendRequest {
-  user1   User @relation("Outgoing Requests", fields: [user1Id], references: [id])
+  user1   User   @relation("Outgoing Requests", fields: [user1Id], references: [id])
   user1Id Int
-  user2   User @relation("Incoming Requests", fields: [user2Id], references: [id])
+  user2   User   @relation("Incoming Requests", fields: [user2Id], references: [id])
   user2Id Int
+  status  String @default("Pending")
 
   @@id([user1Id, user2Id])
 }
 
 model Chat {
-  id              Int            @id @default(autoincrement())
-  name            String?
-  messages        Message[]
-  instances       ChatInstance[]
-  participantsIds Int[]
+  id           Int            @id @default(autoincrement())
+  name         String?
+  messages     Message[]
+  instances    ChatInstance[]
+  participants User[]
+}
+
+model ChatInstance {
+  userId    Int
+  chatId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@id([userId, chatId])
 }
 
 model Message {
@@ -43,14 +56,6 @@ model Message {
   userId Int
   chat   Chat     @relation(fields: [chatId], references: [id])
   chatId Int
+  text   String
   sentAt DateTime @default(now())
-}
-
-model ChatInstance {
-  userId Int
-  chatId Int
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  chat   Chat @relation(fields: [chatId], references: [id])
-
-  @@id([userId, chatId])
 }

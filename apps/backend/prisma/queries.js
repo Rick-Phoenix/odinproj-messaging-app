@@ -87,6 +87,29 @@ export async function fetchUserData(userId) {
     },
     select: {
       username: true,
+      friends: {
+        select: {
+          username: true,
+          email: true,
+        },
+      },
+      friendOf: {
+        select: {
+          username: true,
+          email: true,
+        },
+      },
+      incomingFriendRequests: {
+        select: {
+          status: true,
+          user1: {
+            select: {
+              username: true,
+              email: true,
+            },
+          },
+        },
+      },
       chatInstances: {
         include: {
           chat: {
@@ -105,30 +128,58 @@ export async function fetchUserData(userId) {
   return userData;
 }
 
-export async function addFriendRequest(userId, friendEmail) {
-  const newFriend = await prisma.user.update({
+export async function addAcceptedFriendRequest(userId, friendEmail) {
+  const updatedFriend = await prisma.user.update({
     where: {
-      id: userId,
+      email: friendEmail,
     },
     data: {
-      outgoingFriendRequests: { connect: { email: friendEmail } },
+      friends: {
+        connect: {
+          id: userId,
+        },
+      },
     },
   });
-}
 
-async function getUsers() {
-  const users = await prisma.user.findMany({
-    include: {
-      outgoingFriendRequests: true,
-      incomingFriendRequests: true,
-      friendOf: true,
-      friends: true,
+  const acceptedRequest = await prisma.friendRequest.delete({
+    where: {
+      user1Id_user2Id: {
+        user1Id: updatedFriend.id,
+        user2Id: userId,
+      },
     },
   });
+
+  return true;
 }
 
-async function deleteUser() {
-  await prisma.user.delete({
-    where: { id: 4 },
+async function disconnectFriend() {
+  const user = await prisma.user.update({
+    where: {
+      id: 8,
+    },
+    data: {
+      friends: {
+        disconnect: {
+          id: 7,
+        },
+      },
+    },
   });
+
+  console.log(user);
+}
+
+async function deleteRequest() {
+  const user = await prisma.friendRequest.delete({
+    where: {
+      user1Id_user2Id: {
+        user1Id: 8,
+        user2Id: 7,
+      },
+    },
+  });
+
+  console.log(user);
 }
