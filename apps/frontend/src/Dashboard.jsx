@@ -4,6 +4,7 @@ import FriendRequests from "./FriendRequests.jsx";
 import { UserContext } from "../utils.js";
 import { use } from "react";
 import Friends from "./Friends.jsx";
+import ChatsList from "./ChatsList.jsx";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ export default function Dashboard() {
       <AddFriend />
       <FriendRequests />
       <Friends />
+      <ChatsList />
     </>
   );
 }

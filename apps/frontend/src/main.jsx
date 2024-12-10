@@ -8,6 +8,7 @@ import LoginPage from "./LoginPage.jsx";
 import { UserContextProvider } from "./UserContext.jsx";
 import ProfilePage from "./ProfilePage.jsx";
 import UserProfile from "./UserProfile.jsx";
+import Chat from "./Chat.jsx";
 
 const routes = [
   {
@@ -18,6 +19,7 @@ const routes = [
   { path: "/login", element: <LoginPage /> },
   { path: "/profile/:username", element: <ProfilePage /> },
   { path: "/profile/myProfile", element: <UserProfile /> },
+  { path: "/chats/:contactUsername", element: <Chat /> },
 ];
 
 const router = createBrowserRouter(routes);

@@ -18,7 +18,6 @@ model User {
   outgoingFriendRequests FriendRequest[] @relation("Outgoing Requests")
   incomingFriendRequests FriendRequest[] @relation("Incoming Requests")
   chats                  Chat[]
-  chatInstances          ChatInstance[]
   messages               Message[]
   profile                Profile?
 }
@@ -43,21 +42,10 @@ model FriendRequest {
 }
 
 model Chat {
-  id           Int            @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   name         String?
   messages     Message[]
-  instances    ChatInstance[]
   participants User[]
-}
-
-model ChatInstance {
-  userId    Int
-  chatId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  chat      Chat     @relation(fields: [chatId], references: [id])
-  createdAt DateTime @default(now())
-
-  @@id([userId, chatId])
 }
 
 model Message {

@@ -4,6 +4,7 @@ import { apiUrl, getToken, UserContext } from "../utils.js";
 export function UserContextProvider({ children }) {
   const [refresh, setRefresh] = useState(true);
   const [userData, setUserData] = useState(null);
+  const [friends, setFriends] = useState([]);
 
   useEffect(() => {
     if (refresh) {
@@ -19,6 +20,7 @@ export function UserContextProvider({ children }) {
 
           const responseData = await response.json();
           setRefresh(false);
+          setFriends([...responseData.friends, ...responseData.friendOf]);
           setUserData({ ...responseData });
         }
 
@@ -27,5 +29,9 @@ export function UserContextProvider({ children }) {
     }
   }, [refresh]);
 
-  return <UserContext value={{ userData, setRefresh }}>{children}</UserContext>;
+  return (
+    <UserContext value={{ userData, setRefresh, friends }}>
+      {children}
+    </UserContext>
+  );
 }

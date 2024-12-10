@@ -5,9 +5,11 @@ import cors from "cors";
 import {
   acceptFriendRequest,
   createOrEditProfile,
+  getChat,
   getProfile,
   getUserData,
   initiateFriendRequest,
+  newMessage,
   rejectFriendRequest,
   signUpValidationChain,
   validateLogin,
@@ -31,11 +33,13 @@ app.post("/login", validateLogin);
 app.post("/user/friendRequest/new", initiateFriendRequest);
 app.post("/user/friendRequest/accept", acceptFriendRequest);
 app.post("/user/profile", createOrEditProfile);
+app.post("/user/chats/:contactUsername", newMessage);
 
 app.put("/user/friendRequest/reject", rejectFriendRequest);
 app.put("/user/profile", createOrEditProfile);
 
 app.get("/user", getUserData);
 app.get("/user/profiles/:username", getProfile);
+app.get("/user/chats/:contactUsername", getChat);
 
 app.listen(3000);

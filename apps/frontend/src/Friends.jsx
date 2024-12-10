@@ -1,6 +1,6 @@
 import { use } from "react";
 import { UserContext } from "../utils.js";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Friends() {
   const { userData } = use(UserContext);
@@ -16,14 +16,16 @@ export default function Friends() {
             {friends.map((friend) => {
               return (
                 <li key={friend.username}>
-                  {friend.username}{" "}
+                  <Link to={`/profile/${friend.username}`}>
+                    {friend.username}{" "}
+                  </Link>
                   <button
                     type="button"
                     onClick={() => {
-                      navigate(`/profile/${friend.username}`);
+                      navigate(`/chats/${friend.username}`);
                     }}
                   >
-                    Visit Profile
+                    Open Chat
                   </button>
                 </li>
               );

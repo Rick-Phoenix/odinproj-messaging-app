@@ -112,14 +112,16 @@ export async function fetchUserData(userId) {
           },
         },
       },
-      chatInstances: {
-        include: {
-          chat: {
-            include: {
-              messages: {
-                orderBy: { sentAt: "desc" },
-                take: 1,
-              },
+      chats: {
+        select: {
+          name: true,
+          messages: {
+            orderBy: { sentAt: "desc" },
+            take: 1,
+          },
+          participants: {
+            select: {
+              username: true,
             },
           },
         },
@@ -207,6 +209,64 @@ export async function addOrEditProfile(userId, name, status, bio) {
   return profile;
 }
 
+export async function findOrCreateChat(userId, contactUsername) {
+  const chat = await prisma.chat.findFirst({
+    where: {
+      participants: {
+        every: {
+          OR: [
+            {
+              id: {
+                equals: userId,
+              },
+            },
+            {
+              username: {
+                equals: contactUsername,
+              },
+            },
+          ],
+        },
+      },
+    },
+    include: {
+      messages: true,
+    },
+  });
+
+  if (chat) return chat;
+  else {
+    const newChat = await prisma.chat.create({
+      data: {
+        participants: {
+          connect: [
+            {
+              id: userId,
+            },
+            {
+              username: contactUsername,
+            },
+          ],
+        },
+      },
+    });
+
+    return newChat;
+  }
+}
+
+export async function addMessage(userId, chatId, text) {
+  const newMessage = await prisma.message.create({
+    data: {
+      userId,
+      chatId,
+      text,
+    },
+  });
+
+  return true;
+}
+
 async function disconnectFriend() {
   const user = await prisma.user.update({
     where: {
@@ -235,4 +295,12 @@ async function deleteRequest() {
   });
 
   console.log(user);
+}
+
+async function deleteChat() {
+  await prisma.chat.delete({
+    where: {
+      id: 2,
+    },
+  });
 }

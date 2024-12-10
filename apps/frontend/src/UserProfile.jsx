@@ -10,8 +10,6 @@ export default function UserProfile() {
   const [profile, setProfile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  console.log(profile);
-
   useEffect(() => {
     if (userData && userData.profile) {
       setProfile({ ...userData.profile });

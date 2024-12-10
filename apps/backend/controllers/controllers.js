@@ -3,11 +3,13 @@ import { checkPassword, genPassword } from "../auth/passwordUtils.js";
 import jwt from "jsonwebtoken";
 import {
   addAcceptedFriendRequest,
+  addMessage,
   addOrEditProfile,
   createFriendRequest,
   createUser,
   fetchProfile,
   fetchUserData,
+  findOrCreateChat,
   getUserByUsername,
   isEmailTaken,
   isUsernameTaken,
@@ -160,4 +162,19 @@ export async function createOrEditProfile(req, res) {
 
   if (!profile) return res.status(400);
   else res.json("Profile updated successfully.");
+}
+
+export async function getChat(req, res) {
+  const chat = await findOrCreateChat(
+    req.user.userId,
+    req.params.contactUsername
+  );
+
+  res.json(chat);
+}
+
+export async function newMessage(req, res) {
+  await addMessage(req.user.userId, +req.body.chatId, req.body.message);
+
+  res.json("Message added.");
 }
