@@ -29,6 +29,14 @@ export default function Dashboard() {
       >
         View My Profile
       </button>
+      <button
+        type="button"
+        onClick={() => {
+          navigate("/chats/newGroupChat");
+        }}
+      >
+        Make a new group chat
+      </button>
       <AddFriend />
       <FriendRequests />
       <Friends />

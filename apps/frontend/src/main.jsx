@@ -9,6 +9,8 @@ import { UserContextProvider } from "./UserContext.jsx";
 import ProfilePage from "./ProfilePage.jsx";
 import UserProfile from "./UserProfile.jsx";
 import Chat from "./Chat.jsx";
+import GroupChatForm from "./GroupChatForm.jsx";
+import GroupChat from "./GroupChat.jsx";
 
 const routes = [
   {
@@ -20,6 +22,8 @@ const routes = [
   { path: "/profile/:username", element: <ProfilePage /> },
   { path: "/profile/myProfile", element: <UserProfile /> },
   { path: "/chats/:contactUsername", element: <Chat /> },
+  { path: "/chats/newGroupChat", element: <GroupChatForm /> },
+  { path: "/groupChats/:chatId", element: <GroupChat /> },
 ];
 
 const router = createBrowserRouter(routes);

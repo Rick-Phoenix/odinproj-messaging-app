@@ -115,6 +115,7 @@ export async function fetchUserData(userId) {
       chats: {
         select: {
           name: true,
+          id: true,
           messages: {
             orderBy: { sentAt: "desc" },
             take: 1,
@@ -230,7 +231,16 @@ export async function findOrCreateChat(userId, contactUsername) {
       },
     },
     include: {
-      messages: true,
+      messages: {
+        include: {
+          user: {
+            select: {
+              username: true,
+              pfpurl: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -265,6 +275,51 @@ export async function addMessage(userId, chatId, text) {
   });
 
   return true;
+}
+
+export async function addGroupChat(userId, chatName, usernames) {
+  const newChat = await prisma.chat.create({
+    data: {
+      name: chatName,
+      participants: {
+        connect: [
+          { id: userId },
+          ...usernames.map((username) => {
+            return { username };
+          }),
+        ],
+      },
+    },
+  });
+
+  return newChat.id;
+}
+
+export async function findGroupChat(userId, chatId) {
+  const chat = await prisma.chat.findFirst({
+    where: {
+      id: chatId,
+      participants: {
+        some: {
+          id: userId,
+        },
+      },
+    },
+    include: {
+      messages: {
+        include: {
+          user: {
+            select: {
+              username: true,
+              pfpurl: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return chat;
 }
 
 async function disconnectFriend() {

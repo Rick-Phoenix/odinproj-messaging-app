@@ -17,7 +17,11 @@ export default function ChatsList() {
             ).username;
           return (
             <div key={chat.id}>
-              <Link to={`/chats/${chatTitle}`}>
+              <Link
+                to={
+                  !chat.name ? `/chats/${chatTitle}` : `/groupChats/${chat.id}`
+                }
+              >
                 <div>{chatTitle}</div>
                 <div>{chat.messages[0]?.text}</div>
               </Link>

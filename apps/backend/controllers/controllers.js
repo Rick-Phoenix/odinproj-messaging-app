@@ -3,12 +3,14 @@ import { checkPassword, genPassword } from "../auth/passwordUtils.js";
 import jwt from "jsonwebtoken";
 import {
   addAcceptedFriendRequest,
+  addGroupChat,
   addMessage,
   addOrEditProfile,
   createFriendRequest,
   createUser,
   fetchProfile,
   fetchUserData,
+  findGroupChat,
   findOrCreateChat,
   getUserByUsername,
   isEmailTaken,
@@ -177,4 +179,22 @@ export async function newMessage(req, res) {
   await addMessage(req.user.userId, +req.body.chatId, req.body.message);
 
   res.json("Message added.");
+}
+
+export async function newGroupChat(req, res) {
+  const { name, participants } = req.body;
+  const newChatId = await addGroupChat(req.user.userId, name, participants);
+
+  if (!newChatId)
+    return res
+      .status(400)
+      .json("An error occurred in the creation of the chat.");
+  res.json(newChatId);
+}
+
+export async function getGroupChat(req, res) {
+  const chat = await findGroupChat(req.user.userId, +req.params.chatId);
+
+  if (!chat) return res.status(400).json("Chat not found.");
+  res.json(chat);
 }
