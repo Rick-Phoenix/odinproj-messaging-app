@@ -19,7 +19,6 @@ export function UserContextProvider({ children }) {
           });
 
           const responseData = await response.json();
-          setRefresh(false);
           setFriends([...responseData.friends, ...responseData.friendOf]);
           setUserData({ ...responseData });
         }
@@ -27,6 +26,7 @@ export function UserContextProvider({ children }) {
         getData();
       }
     }
+    setRefresh(false);
   }, [refresh]);
 
   return (

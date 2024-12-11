@@ -1,8 +1,9 @@
-import { useActionState, useEffect } from "react";
+import { use, useActionState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiUrl, getToken } from "../utils.js";
+import { apiUrl, getToken, UserContext } from "../utils.js";
 
 export default function LoginPage() {
+  const { setRefresh } = use(UserContext);
   const navigate = useNavigate();
   const [error, loginAction, isPending] = useActionState(async function (
     previousState,
@@ -26,6 +27,7 @@ export default function LoginPage() {
     }
 
     localStorage.setItem("JWT", responseData.token);
+    setRefresh(true);
     navigate("/", { replace: true });
     return null;
   },

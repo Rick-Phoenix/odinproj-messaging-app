@@ -123,6 +123,7 @@ export async function fetchUserData(userId) {
           participants: {
             select: {
               username: true,
+              pfpurl: true,
             },
           },
         },

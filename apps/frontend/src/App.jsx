@@ -7,8 +7,7 @@ import { use } from "react";
 
 function App() {
   const token = getToken();
-  const { userData, setRefresh } = use(UserContext);
-  console.log(userData);
+  const { userData } = use(UserContext);
 
   return (
     <>
