@@ -88,6 +88,7 @@ export async function fetchUserData(userId) {
     select: {
       profile: true,
       username: true,
+      pfpurl: true,
       friends: {
         select: {
           username: true,
@@ -231,13 +232,19 @@ export async function findOrCreateChat(userId, contactUsername) {
         },
       },
     },
-    include: {
+    select: {
+      id: true,
+      participants: {
+        select: {
+          username: true,
+          pfpurl: true,
+        },
+      },
       messages: {
         include: {
           user: {
             select: {
               username: true,
-              pfpurl: true,
             },
           },
         },
@@ -357,6 +364,26 @@ async function deleteChat() {
   await prisma.chat.delete({
     where: {
       id: 2,
+    },
+  });
+}
+
+async function deleteMsg() {
+  await prisma.message.delete({
+    where: {
+      id: 1,
+    },
+  });
+}
+
+async function updateProfilePic() {
+  await prisma.user.update({
+    where: {
+      username: "Obi-Wan",
+    },
+    data: {
+      pfpurl:
+        "https://res.cloudinary.com/dqjizh49f/image/upload/v1733930322/Messaging%20App/obiwan.jpg",
     },
   });
 }

@@ -1,6 +1,12 @@
-import { useActionState, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getRequestWithToken, postRequestWithToken } from "../utils.js";
+import { use, useActionState, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { format } from "date-fns";
+import {
+  getRequestWithToken,
+  postRequestWithToken,
+  UserContext,
+} from "../utils.js";
+import { IoIosSend } from "react-icons/io";
 
 function getDateAndTime(string) {
   const splitStr = string.split("T");
@@ -11,6 +17,7 @@ function getDateAndTime(string) {
 
 export default function Chat() {
   const { contactUsername } = useParams();
+  const { userData } = use(UserContext);
   const [chat, setChat] = useState(null);
   const [refresh, setRefresh] = useState(true);
   const [state, sendMessage, isPending] = useActionState(
@@ -40,33 +47,77 @@ export default function Chat() {
     }
   }, [contactUsername, refresh]);
 
+  if (!chat) return <></>;
+  console.log(userData);
+
+  const contactPfp = chat.participants.find(
+    (user) => user.username === contactUsername
+  ).pfpurl;
+
   return (
     <>
-      {chat && (
-        <>
-          <form action={sendMessage}>
-            <input type="hidden" name="chatId" value={chat.id} />
-            <input
-              type="text"
-              name="message"
-              id="message"
-              autoFocus
-              disabled={isPending}
-            />
-            <button type="submit" disabled={isPending}>
-              Send
-            </button>
-          </form>
-          {chat?.messages &&
-            chat.messages.map((msg) => {
-              const { date, time } = getDateAndTime(msg.sentAt);
-              return (
-                <div key={msg.id}>
-                  {msg.text} Sent on {date} at {time}
-                </div>
-              );
-            })}
-        </>
+      {chat && userData && (
+        <div className="chatContainer">
+          <Link
+            to={`/profile/${contactUsername}`}
+            className="chatHeader nolink"
+          >
+            <img src={contactPfp} alt="Contact Picture" />
+            <h3>{contactUsername}</h3>
+          </Link>
+          <div className="chatLayout">
+            {chat?.messages && (
+              <ul className="messages">
+                {chat.messages.map((msg) => {
+                  const { date, time } = getDateAndTime(msg.sentAt);
+                  const today = new Date().toISOString().split("T")[0];
+                  const isBeforeToday = new Date(date) < new Date(today);
+                  const isFromUser = msg.user.username === userData.username;
+                  return (
+                    <li
+                      className={
+                        "message" +
+                        " " +
+                        (!isFromUser ? "fromOthers" : "fromUser")
+                      }
+                      key={msg.id}
+                    >
+                      <img
+                        src={isFromUser ? userData.pfpurl : contactPfp}
+                        className={"msgPfp"}
+                      />
+                      <span className="msgText">{msg.text}</span>{" "}
+                      <span className="msgTime">
+                        Sent{" "}
+                        {isBeforeToday
+                          ? `on ${format(
+                              new Date(msg.sentAt),
+                              "MMM do 'at' H:mm"
+                            )}`
+                          : `today at ${format(new Date(msg.sentAt), "H:mm")}`}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+            <form className="msgInput" action={sendMessage}>
+              <input type="hidden" name="chatId" value={chat.id} />
+              <input
+                type="text"
+                name="message"
+                id="message"
+                autoFocus
+                disabled={isPending}
+                placeholder="Write a message..."
+                required
+              />
+              <button type="submit" disabled={isPending}>
+                <IoIosSend />
+              </button>
+            </form>
+          </div>
+        </div>
       )}
     </>
   );
