@@ -2,8 +2,16 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
 
-  --main-color: #84dad0;
-  --hover-contrast: #74b8b0;
+  height: 100%;
+
+  --main-color: #64cabe;
+  --mid-contrast: #74b8b0;
+  --darker-contrast: #4e7a75;
+
+  --container-shadow: 0px 0px 5px 1px #438168;
+
+  --gentle-text-shadow: 1px 0px 4px #13251d;
+  --header-text-shadow: 2px 0px 15px #13251d;
 
   color-scheme: light dark;
   color: white;
@@ -33,8 +41,6 @@ a {
 
 a:hover {
   font-weight: 500;
-  color: #535bf2;
-  text-decoration: underline;
 }
 
 body {
@@ -77,10 +83,22 @@ img {
 
 header {
   height: 10vh;
+  margin-top: 2rem;
   margin-bottom: 1rem;
   img {
     height: 100%;
     border-radius: 20px;
+    box-shadow: 0px 0px 20px -6px #004227;
+  }
+}
+
+footer {
+  height: 6vh;
+  margin-top: auto;
+  padding: 1rem;
+
+  img {
+    max-height: 100%;
   }
 }
 
@@ -100,43 +118,67 @@ header {
   transform: translateX(0);
 }
 
-a.nolink {
-  &:hover {
-    color: inherit;
-    text-decoration: none;
-  }
-}
-
 ul.chats {
   display: grid;
-  gap: 1rem;
+  margin: 2rem;
+  width: max(300px, 30%);
+  background-color: #4e7a75bd;
+  border-radius: 15px;
+  box-shadow: var(--container-shadow);
+
   .chatItem {
     height: 10vh;
     display: grid;
     grid-template-columns: 20% 80%;
     grid-template-rows: 50% 50%;
     align-items: center;
-    gap: 0 10px;
-    padding: 2rem;
+    gap: 3px 2rem;
+    padding: 1.5rem 2rem;
     border-radius: 15px;
-    margin: 1rem;
+    max-width: 100%;
+
+    &:hover {
+      background-color: var(--darker-contrast);
+
+      .chatTitle {
+        font-weight: 800;
+      }
+
+      .lastMessage {
+        font-weight: 400;
+        color: #eaeaea;
+      }
+    }
 
     .chatPic {
       max-width: 100%;
       max-height: 100%;
       grid-row: 1 /3;
       border-radius: 50%;
+      box-shadow: 0px 0px 6px 0px #12392a;
+      border: 2px solid #4c7d67;
+    }
+
+    .chatTitle,
+    .lastMessage {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 75%;
     }
 
     .chatTitle {
-      justify-self: start;
       align-self: end;
       font-weight: bold;
+      text-shadow: 0px 0px 4px #13251d;
     }
 
     .lastMessage {
-      justify-self: start;
       align-self: start;
+      font-size: 0.7em;
+      font-weight: 300;
+      color: #e2e2e2;
+      text-shadow: var(--gentle-text-shadow);
     }
   }
 }
@@ -149,41 +191,61 @@ ul.chats {
   grid-template-rows: 100%;
   align-items: center;
   padding: 1rem 3rem;
-  border-radius: 20px 20px 0 0;
+  border-radius: 18px 18px 0 0;
   background-color: #507772;
+  box-shadow: inset 0px 0px 4px #2b543a;
+  text-shadow: var(--header-text-shadow);
 
   &:hover {
     background-color: #3b5350;
+    font-weight: 900;
   }
 
   img {
     max-height: 100%;
     max-width: 100%;
     border-radius: 50%;
+    box-shadow: 0px 0px 6px 0px #12392a;
+    border: 2px solid #4c7d67;
   }
 }
 
 .chatContainer {
-  padding-bottom: 1rem;
   border-radius: 20px;
-  background-color: var(--hover-contrast);
+  background-color: #85b3ab;
+  box-shadow: var(--container-shadow);
+  border: 2px solid #507772;
+  margin: 1rem;
+  width: max(300px, 30%);
 
   .chatLayout {
-    margin: 2rem;
+    padding: 2rem;
+    box-shadow: inset 1px 1px 5px #4f6358;
+    padding-bottom: 3rem;
+    border-radius: 0 0 18px 18px;
 
     .msgInput {
       display: flex;
       background-color: darkgray;
       border-radius: 10px;
       margin-top: 2rem;
+      box-shadow: var(--container-shadow);
 
       button {
         border-radius: 0 10px 10px 0;
+        background-color: #0d2720d4;
+
+        &:hover {
+          background-color: #0d291e;
+        }
       }
 
       input {
         border-radius: 10px 0 0 10px;
         text-align: end;
+        flex: 1;
+        background-color: #e7fffb;
+        color: black;
 
         &::placeholder {
           text-align: center;
@@ -194,41 +256,55 @@ ul.chats {
     .messages {
       display: grid;
       grid-template-columns: 100%;
-      grid-auto-rows: 10vh;
-      gap: 10px;
+      gap: 1rem;
       align-items: center;
+      word-break: break-word;
 
       .message {
         display: grid;
-        grid-template-rows: repeat(2, auto);
         height: 100%;
-        gap: 0 10px;
+        gap: 0 1rem;
         align-items: center;
+        width: 100%;
+
+        .msgGroup {
+          display: grid;
+          width: fit-content;
+          background-color: #3b5350;
+          padding: 10px 15px;
+          box-shadow: var(--container-shadow);
+          gap: 1px;
+          text-shadow: var(--gentle-text-shadow);
+        }
 
         .msgPfp {
-          max-width: 100%;
-          max-height: 100%;
-          grid-row: 1/3;
+          height: 40px;
           border-radius: 50%;
+          box-shadow: 0px 0px 4px 1px #2c4b3f;
+          border: 2px solid #4c7d67;
         }
 
         .msgTime {
-          font-weight: 300;
-          font-size: 0.5rem;
+          font-weight: 200;
+          font-size: 7px;
           align-self: start;
-          width: fit-content;
         }
 
         .msgText {
           align-self: end;
-          width: fit-content;
+          font-size: 13px;
+          font-weight: 300;
         }
       }
 
       .fromOthers {
-        grid-template-columns: 20% 80%;
+        grid-template-columns: max-content auto;
         justify-self: start;
         text-align: start;
+
+        .msgGroup {
+          border-radius: 20px 20px 20px 0;
+        }
 
         .msgPfp {
           grid-column: 1/2;
@@ -236,35 +312,43 @@ ul.chats {
 
         .msgText {
           grid-row: 1/2;
-          grid-column: 2/3;
         }
 
         .msgTime {
           grid-row: 2 / 3;
-          grid-column: 2 / 3;
         }
       }
 
       .fromUser {
-        grid-template-columns: 80% 20%;
+        grid-template-columns: auto max-content;
         justify-self: end;
         text-align: end;
 
-        .msgPfp {
-          grid-column: 2/3;
+        .msgGroup {
+          grid-column: 1/2;
+          justify-self: end;
+          border-radius: 20px 20px 0 20px;
         }
 
-        .msgText {
-          grid-column: 1/2;
+        .msgPfp {
+          grid-column: 2/3;
           grid-row: 1/2;
         }
 
+        .msgText {
+          grid-row: 1/2;
+          justify-self: end;
+        }
+
         .msgTime {
-          grid-column: 1/2;
           grid-row: 2/3;
           justify-self: end;
         }
       }
     }
   }
+}
+
+.pfp {
+  width: 100px;
 }

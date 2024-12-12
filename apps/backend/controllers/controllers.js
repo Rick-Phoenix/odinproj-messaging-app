@@ -16,8 +16,49 @@ import {
   isEmailTaken,
   isUsernameTaken,
   setRejectedFriendRequest,
+  updatePfpUrl,
 } from "../prisma/queries.js";
+import multer from "multer";
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+
 const secretKey = process.env.JWT_SECRET;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    asset_folder: "Messaging App",
+    public_id: async (req, file) => `${req.body.username}`,
+    overwrite: true,
+    unique_filename: false,
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+  },
+});
+
+export const uploadChain = [
+  upload.single("pfp"),
+  async (req, res, next) => {
+    if (!req?.file) return next();
+    const newPfpUrl = await updatePfpUrl(req.user.userId, req.file.path);
+    if (!newPfpUrl)
+      return res
+        .status(400)
+        .json("An error occurred while uploading the picture.");
+    next();
+  },
+];
 
 export const signUpValidationChain = [
   body("username")

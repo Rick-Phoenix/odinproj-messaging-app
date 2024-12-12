@@ -14,6 +14,7 @@ import {
   newMessage,
   rejectFriendRequest,
   signUpValidationChain,
+  uploadChain,
   validateLogin,
   validateToken,
 } from "./controllers/controllers.js";
@@ -34,13 +35,13 @@ app.post("/signup", signUpValidationChain);
 app.post("/login", validateLogin);
 app.post("/user/friendRequest/new", initiateFriendRequest);
 app.post("/user/friendRequest/accept", acceptFriendRequest);
-app.post("/user/profile", createOrEditProfile);
+app.post("/user/profile", uploadChain, createOrEditProfile);
 app.post("/user/chats/:contactUsername", newMessage);
 app.post("/user/groupChats", newGroupChat);
 app.post("/user/groupChats/:chatId", newMessage);
 
 app.put("/user/friendRequest/reject", rejectFriendRequest);
-app.put("/user/profile", createOrEditProfile);
+app.put("/user/profile", uploadChain, createOrEditProfile);
 
 app.get("/user", getUserData);
 app.get("/user/profiles/:username", getProfile);

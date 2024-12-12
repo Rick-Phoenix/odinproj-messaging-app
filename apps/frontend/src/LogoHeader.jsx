@@ -1,4 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
+import Odin from "./assets/Images/odin banner.png";
 
 export default function LogoHeader() {
   return (
@@ -12,6 +13,11 @@ export default function LogoHeader() {
         </Link>
       </header>
       <Outlet />
+      <footer>
+        <a href="https://www.theodinproject.com/">
+          <img src={Odin} alt="Odin Project Logo" />
+        </a>
+      </footer>
     </>
   );
 }

@@ -1,14 +1,18 @@
 import { use, useActionState, useEffect, useState } from "react";
 import {
+  apiUrl,
+  getToken,
   postRequestWithToken,
   putRequestWithToken,
   UserContext,
 } from "../utils.js";
+import { useNavigate } from "react-router-dom";
 
 export default function UserProfile() {
   const { userData, setRefresh } = use(UserContext);
   const [profile, setProfile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (userData && userData.profile) {
@@ -16,67 +20,90 @@ export default function UserProfile() {
     }
   }, [userData]);
 
-  const [formState, sendForm, isPending] = useActionState(
+  const [responseMsg, sendForm, isPending] = useActionState(
     async (previousState, formData) => {
-      let response;
-      if (!profile)
-        response = await postRequestWithToken(formData, "/user/profile");
-      if (profile)
-        response = await putRequestWithToken(formData, "/user/profile");
+      const method = !profile ? "POST" : "PUT";
+      const token = getToken();
+      const response = await fetch(`${apiUrl}/user/profile`, {
+        method: method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
       setIsEditing(false);
-      setRefresh(true);
-      return response.msg;
+
+      if (!response.ok) {
+        const responseMsg = await response.json();
+        return responseMsg;
+      }
+      navigate(0);
+
+      return null;
     },
     null
   );
 
   if (!userData) return <></>;
 
-  if (!profile || isEditing)
-    return (
-      <div>
-        {!profile && <h3>Create a profile</h3>}
-        <form action={sendForm}>
-          <fieldset disabled={isPending}>
-            <label htmlFor="name">Name: </label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              defaultValue={profile?.name}
-              required
-            />
-            <label htmlFor="status">Status: </label>
-            <input
-              type="text"
-              name="status"
-              id="status"
-              required
-              defaultValue={profile?.status || "Hello there!"}
-            />
-            <label htmlFor="bio">Bio: </label>
-            <textarea
-              name="bio"
-              id="bio"
-              placeholder="Tell the world about yourself..."
-              defaultValue={profile?.bio}
-            ></textarea>
-            <button type="submit">Save</button>
-          </fieldset>
-        </form>
-      </div>
-    );
   return (
     <>
-      Name: {profile.name}, Status: {profile.status}, Bio: {profile.bio}
-      <button
-        type="button"
-        onClick={() => {
-          setIsEditing(true);
-        }}
-      >
-        Edit
-      </button>
+      <h3>
+        {!profile
+          ? "Create a profile"
+          : isEditing
+          ? "Edit profile"
+          : userData.username}
+      </h3>
+      <img className="pfp" src={userData.pfpurl} alt="" />
+      <h3>{responseMsg}</h3>
+      {!isEditing && profile && (
+        <div>
+          Name: {profile.name}, Status: {profile.status}, Bio: {profile.bio}
+        </div>
+      )}
+      {(isEditing || !profile) && (
+        <form action={sendForm} method="post" encType="multipart/form-data">
+          <label htmlFor="pfp">Upload a new profile picture</label>
+          <input type="hidden" name="username" value={userData.username} />
+          <input type="file" name="pfp" accept=".png,.jpg,.jpeg,.webp" />
+          <label htmlFor="name">Name: </label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            defaultValue={profile ? profile.name : null}
+            required
+          />
+          <label htmlFor="status">Status: </label>
+          <input
+            type="text"
+            name="status"
+            id="status"
+            required
+            defaultValue={profile ? profile.status : null}
+          />
+          <label htmlFor="bio">Bio: </label>
+          <textarea
+            name="bio"
+            id="bio"
+            placeholder="Tell the world about yourself..."
+            defaultValue={profile ? profile.bio : null}
+          ></textarea>
+          <button type="submit">Save</button>
+        </form>
+      )}
+      {!isEditing && profile && (
+        <button
+          type="button"
+          onClick={() => {
+            setIsEditing(true);
+          }}
+        >
+          Edit
+        </button>
+      )}
     </>
   );
 }

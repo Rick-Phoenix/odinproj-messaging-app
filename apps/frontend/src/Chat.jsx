@@ -86,16 +86,17 @@ export default function Chat() {
                         src={isFromUser ? userData.pfpurl : contactPfp}
                         className={"msgPfp"}
                       />
-                      <span className="msgText">{msg.text}</span>{" "}
-                      <span className="msgTime">
-                        Sent{" "}
-                        {isBeforeToday
-                          ? `on ${format(
-                              new Date(msg.sentAt),
-                              "MMM do 'at' H:mm"
-                            )}`
-                          : `today at ${format(new Date(msg.sentAt), "H:mm")}`}
-                      </span>
+                      <div className="msgGroup">
+                        <span className="msgText">{msg.text}</span>{" "}
+                        <span className="msgTime">
+                          {isBeforeToday
+                            ? `${format(
+                                new Date(msg.sentAt),
+                                "MMM do 'at' H:mm"
+                              )}`
+                            : `${format(new Date(msg.sentAt), "H:mm")}`}
+                        </span>
+                      </div>
                     </li>
                   );
                 })}

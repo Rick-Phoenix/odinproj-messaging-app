@@ -330,6 +330,19 @@ export async function findGroupChat(userId, chatId) {
   return chat;
 }
 
+export async function updatePfpUrl(userId, pfpurl) {
+  await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      pfpurl,
+    },
+  });
+
+  return true;
+}
+
 async function disconnectFriend() {
   const user = await prisma.user.update({
     where: {
@@ -372,18 +385,6 @@ async function deleteMsg() {
   await prisma.message.delete({
     where: {
       id: 1,
-    },
-  });
-}
-
-async function updateProfilePic() {
-  await prisma.user.update({
-    where: {
-      username: "Obi-Wan",
-    },
-    data: {
-      pfpurl:
-        "https://res.cloudinary.com/dqjizh49f/image/upload/v1733930322/Messaging%20App/obiwan.jpg",
     },
   });
 }

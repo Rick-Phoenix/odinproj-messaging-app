@@ -12,6 +12,8 @@ export default function Dashboard() {
   const { userData } = use(UserContext);
   const [toggleSidebar, setToggleSidebar] = useState(false);
 
+  console.log(userData);
+
   function handleLogout() {
     localStorage.removeItem("JWT");
     navigate(0);
