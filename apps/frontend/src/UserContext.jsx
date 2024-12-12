@@ -19,6 +19,12 @@ export function UserContextProvider({ children }) {
           });
 
           const responseData = await response.json();
+          responseData.chats.sort((chatA, chatB) => {
+            return (
+              new Date(chatB.messages[0].sentAt).getTime() -
+              new Date(chatA.messages[0].sentAt).getTime()
+            );
+          });
           setFriends([...responseData.friends, ...responseData.friendOf]);
           setUserData({ ...responseData });
         }

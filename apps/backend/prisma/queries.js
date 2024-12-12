@@ -117,6 +117,7 @@ export async function fetchUserData(userId) {
         select: {
           name: true,
           id: true,
+          chatPicUrl: true,
           messages: {
             orderBy: { sentAt: "desc" },
             take: 1,
@@ -337,6 +338,24 @@ export async function updatePfpUrl(userId, pfpurl) {
     },
     data: {
       pfpurl,
+    },
+  });
+
+  return true;
+}
+
+export async function updateChatPicUrl(userId, chatId, picUrl) {
+  await prisma.chat.update({
+    where: {
+      id: chatId,
+      participants: {
+        some: {
+          id: userId,
+        },
+      },
+    },
+    data: {
+      chatPicUrl: picUrl,
     },
   });
 

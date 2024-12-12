@@ -16,6 +16,7 @@ import {
   isEmailTaken,
   isUsernameTaken,
   setRejectedFriendRequest,
+  updateChatPicUrl,
   updatePfpUrl,
 } from "../prisma/queries.js";
 import multer from "multer";
@@ -47,7 +48,7 @@ const upload = multer({
   },
 });
 
-export const uploadChain = [
+export const pfpUploadChain = [
   upload.single("pfp"),
   async (req, res, next) => {
     if (!req?.file) return next();
@@ -57,6 +58,23 @@ export const uploadChain = [
         .status(400)
         .json("An error occurred while uploading the picture.");
     next();
+  },
+];
+
+export const chatPicUploadChain = [
+  upload.single("chatPic"),
+  async (req, res) => {
+    const newChatPicUrl = await updateChatPicUrl(
+      req.user.userId,
+      +req.body.chatId,
+      req.file.path
+    );
+
+    if (!newChatPicUrl)
+      return res
+        .status(400)
+        .json("An error occurred while uploading the picture.");
+    return res.json("Upload successful.");
   },
 ];
 

@@ -19,7 +19,7 @@ export default function ChatsList() {
               chatInfo.name = chat.name;
               chatInfo.picUrl =
                 chat.chatPicUrl ||
-                "https://res.cloudinary.com/dqjizh49f/image/upload/v1733903271/Messaging%20App/genericpfp.jpg";
+                "https://res.cloudinary.com/dqjizh49f/image/upload/v1734014258/Messaging%20App/mvnscba5oovyl1je3pdq.jpg";
             }
             if (!chat.name) {
               const contact = chat.participants.find(
