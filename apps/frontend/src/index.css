@@ -84,7 +84,7 @@ img {
 header {
   height: 10vh;
   margin-top: 2rem;
-  margin-bottom: 1rem;
+
   img {
     height: 100%;
     border-radius: 20px;
@@ -94,8 +94,7 @@ header {
 
 footer {
   height: 6vh;
-  margin-top: auto;
-  padding: 1rem;
+  margin-top: 2rem;
 
   img {
     max-height: 100%;
@@ -104,14 +103,90 @@ footer {
 
 .sidebar {
   height: 100vh;
-  width: 100px;
-  position: absolute;
+  width: 200px;
+  position: fixed;
+  background-color: #4e7a75bd;
+  border-radius: 0 10px 10px 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
 
   transition: transform 0.5s;
   transform: translateX(-100%);
 
+  padding: 1rem;
+
   top: 0;
   left: 0;
+
+  .sidebarPfp {
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #4c7d67;
+
+    &:hover {
+      box-shadow: 0px 0px 6px 0px #12392a;
+    }
+  }
+
+  .sidebarTop {
+    display: grid;
+    gap: 1rem;
+
+    button.icon {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    .friendsList {
+      display: grid;
+
+      h4 {
+        margin: 1rem 0;
+      }
+
+      hr {
+        margin: 0;
+      }
+
+      .friendItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        padding: 1rem;
+        border-radius: 10px;
+
+        &:hover {
+          background-color: var(--darker-contrast);
+        }
+
+        .friendPfp {
+          height: 35px;
+          border-radius: 50%;
+          border: 2px solid #4c7d67;
+        }
+      }
+    }
+  }
+
+  .sidebarBottom {
+    display: flex;
+    justify-content: space-between;
+
+    button.logout {
+      border-radius: 50%;
+      border: 2px solid #4c7d67;
+
+      &:hover {
+        box-shadow: 0px 0px 6px 0px #12392a;
+      }
+    }
+  }
 }
 
 .sidebar.active {
@@ -121,6 +196,7 @@ footer {
 ul.chats {
   display: grid;
   margin: 2rem;
+  margin-top: 0;
   width: max(300px, 30%);
   background-color: #4e7a75bd;
   border-radius: 15px;
@@ -215,7 +291,6 @@ ul.chats {
   background-color: #85b3ab;
   box-shadow: var(--container-shadow);
   border: 2px solid #507772;
-  margin: 1rem;
   width: max(300px, 30%);
 
   .chatLayout {
@@ -378,6 +453,14 @@ ul.chats {
       width: 140px;
     }
   }
+}
+
+.menuToggle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem;
+  background-color: rgb(15, 53, 46);
 }
 
 input[type="file"] {

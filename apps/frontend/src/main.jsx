@@ -11,12 +11,13 @@ import UserProfile from "./UserProfile.jsx";
 import Chat from "./Chat.jsx";
 import GroupChatForm from "./GroupChatForm.jsx";
 import GroupChat from "./GroupChat.jsx";
-import LogoHeader from "./LogoHeader.jsx";
+import FunctionalWrapper from "./FunctionalWrapper.jsx";
+import FriendsPage from "./FriendsPage.jsx";
 
 const routes = [
   {
     path: "/",
-    element: <LogoHeader />,
+    element: <FunctionalWrapper />,
     children: [
       {
         path: "/",
@@ -29,6 +30,7 @@ const routes = [
       { path: "/chats/:contactUsername", element: <Chat /> },
       { path: "/chats/newGroupChat", element: <GroupChatForm /> },
       { path: "/groupChats/:chatId", element: <GroupChat /> },
+      { path: "/friends", element: <FriendsPage /> },
     ],
   },
 ];

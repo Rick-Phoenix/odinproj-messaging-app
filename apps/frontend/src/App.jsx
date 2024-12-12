@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import "./App.css";
 import { getToken, UserContext } from "../utils.js";
-
-import Dashboard from "./Dashboard.jsx";
 import { use } from "react";
+import ChatsList from "./ChatsList.jsx";
 
 function App() {
   const token = getToken();
   const { userData } = use(UserContext);
+
+  console.log(userData);
 
   return (
     <>
@@ -23,7 +24,7 @@ function App() {
         </div>
       )}
 
-      {userData && <Dashboard />}
+      {userData && <ChatsList />}
     </>
   );
 }

@@ -93,12 +93,14 @@ export async function fetchUserData(userId) {
         select: {
           username: true,
           email: true,
+          pfpurl: true,
         },
       },
       friendOf: {
         select: {
           username: true,
           email: true,
+          pfpurl: true,
         },
       },
       incomingFriendRequests: {
@@ -383,7 +385,7 @@ async function deleteRequest() {
   const user = await prisma.friendRequest.delete({
     where: {
       user1Id_user2Id: {
-        user1Id: 8,
+        user1Id: 9,
         user2Id: 7,
       },
     },
