@@ -32,9 +32,15 @@ export default function FriendRequestAction({ request }) {
 
   return (
     <>
-      <li>
-        {request.user1.email}
-        {request.user1.username}
+      <li className="requestItem">
+        <div className="requestInfo">
+          <img
+            className="requestPfp"
+            src={request.user1.pfpurl}
+            alt="Request User Profile Pic"
+          />
+          <span className="requestUsername">{request.user1.username}</span>
+        </div>
         <form action="">
           <input type="hidden" name="friendId" value={request.user1.id} />
           <button type="submit" disabled={isPending} formAction={acceptRequest}>

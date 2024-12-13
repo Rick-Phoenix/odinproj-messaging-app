@@ -1,8 +1,8 @@
 import { useActionState, useState } from "react";
 import { postRequestWithToken } from "../utils.js";
+import { IoPersonAdd } from "react-icons/io5";
 
 export default function AddFriend() {
-  const [toggleInput, setToggleInput] = useState(false);
   const [feedbackMsg, setFeedbackMsg] = useState(null);
   const [state, addFriendAction, isPending] = useActionState(async function (
     previousState,
@@ -17,10 +17,10 @@ export default function AddFriend() {
   },
   null);
 
-  if (toggleInput)
-    return (
-      <form action={addFriendAction}>
-        <label htmlFor="email">Add by email: </label>
+  return (
+    <form className="addFriend" action={addFriendAction}>
+      <label htmlFor="email">Friend Email: </label>
+      <div className="inputGroup">
         <input
           type="email"
           name="email"
@@ -32,22 +32,10 @@ export default function AddFriend() {
           }}
         />
         <button type="submit" disabled={isPending}>
-          Add Friend
+          <IoPersonAdd />
         </button>
-        <h4>{feedbackMsg}</h4>
-      </form>
-    );
-
-  return (
-    <>
-      <button
-        type="button"
-        onClick={() => {
-          setToggleInput(true);
-        }}
-      >
-        Add a friend
-      </button>
-    </>
+      </div>
+      <h4>{feedbackMsg}</h4>
+    </form>
   );
 }

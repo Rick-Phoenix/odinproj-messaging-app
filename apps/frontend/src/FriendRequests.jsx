@@ -1,20 +1,26 @@
 import { use } from "react";
 import { UserContext } from "../utils.js";
 import FriendRequestAction from "./FriendRequestAction.jsx";
+import AddFriend from "./AddFriend.jsx";
 
 export default function FriendRequests() {
   const { userData } = use(UserContext);
+
+  if (!userData) return <></>;
+
   const requests = userData.incomingFriendRequests;
 
   return (
-    <>
+    <div className="friendRequests panel">
+      <h3>Add A Friend</h3>
+      <AddFriend />
+      <h3>Pending Requests: </h3>
       {requests.length === 0 && (
-        <h3>There are no pending friend requests at the moment.</h3>
+        <span>There are no pending friend requests at the moment.</span>
       )}
       {requests.length > 0 && (
         <>
-          <h3>Pending Requests: </h3>
-          <ul>
+          <ul className="requests">
             {requests.map((request) => {
               if (request.status === "Pending")
                 return (
@@ -27,6 +33,6 @@ export default function FriendRequests() {
           </ul>
         </>
       )}
-    </>
+    </div>
   );
 }

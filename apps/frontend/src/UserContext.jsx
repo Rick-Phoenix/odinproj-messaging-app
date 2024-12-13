@@ -9,6 +9,10 @@ export function UserContextProvider({ children }) {
   useEffect(() => {
     if (refresh) {
       const token = getToken();
+      if (!token) {
+        setUserData(null);
+        setFriends([]);
+      }
       if (token) {
         async function getData() {
           const response = await fetch(`${apiUrl}/user`, {

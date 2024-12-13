@@ -10,7 +10,7 @@ export default function GroupChatForm() {
       const participants = formData.getAll("participants");
       const name = formData.get("name");
       if (participants.length < 2)
-        return "You must select at least two participants.";
+        return "You must select at least two friends.";
       const obj = { participants, name };
       const response = await postRequestWithToken(
         Object.entries(obj),
@@ -23,30 +23,43 @@ export default function GroupChatForm() {
   );
 
   return (
-    <>
+    <div className="groupChat panel">
+      <h3>New Group Chat</h3>
       {friends && (
         <form action={submitForm}>
           <fieldset disabled={isPending}>
-            <label htmlFor="name">Chat name:</label>
-            <input type="text" name="name" id="name" required />
-            {friends.map((friend) => {
-              return (
-                <div key={friend.username}>
-                  <label htmlFor="participants">{friend.username}</label>
-                  <input
-                    type="checkbox"
-                    name="participants"
-                    id="participants"
-                    value={friend.username}
-                  />
-                </div>
-              );
-            })}
+            <div className="inputGroup">
+              <label htmlFor="name">Chat name:</label>
+              <input type="text" name="name" id="name" required />
+            </div>
+            <h3>Friends</h3>
+            <ul className="friendsList">
+              {friends.map((friend) => {
+                return (
+                  <li className="friendItem" key={friend.username}>
+                    <label htmlFor={friend.username}>
+                      <img
+                        className="pfp"
+                        src={friend.pfpurl}
+                        alt={friend.username}
+                      />
+                      <span>{friend.username}</span>
+                      <input
+                        type="checkbox"
+                        name="participants"
+                        id={friend.username}
+                        value={friend.username}
+                      />
+                    </label>
+                  </li>
+                );
+              })}
+            </ul>
             <button type="submit">Create Chat</button>
           </fieldset>
           {error && <h3>{error}</h3>}
         </form>
       )}
-    </>
+    </div>
   );
 }

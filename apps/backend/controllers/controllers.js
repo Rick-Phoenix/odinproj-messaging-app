@@ -5,6 +5,7 @@ import {
   addAcceptedFriendRequest,
   addGroupChat,
   addMessage,
+  addMessageWithPic,
   addOrEditProfile,
   createFriendRequest,
   createUser,
@@ -47,6 +48,19 @@ const upload = multer({
     fileSize: 5 * 1024 * 1024,
   },
 });
+
+export const msgImageUploadChain = [
+  upload.single("image"),
+  async (req, res) => {
+    const upload = await addMessageWithPic(
+      req.user.userId,
+      +req.params.chatId,
+      req.file.path
+    );
+    if (!upload) return res.status(400).json("An error occurred.");
+    res.json("Upload successful.");
+  },
+];
 
 export const pfpUploadChain = [
   upload.single("pfp"),

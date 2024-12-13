@@ -40,7 +40,8 @@ export default function LoginPage() {
   }, [navigate]);
 
   return (
-    <>
+    <div className="formPage">
+      <h2>Log In</h2>
       <form action={loginAction}>
         <label htmlFor="username">Username: </label>
         <input type="text" name="username" id="username" required />
@@ -53,11 +54,11 @@ export default function LoginPage() {
         </button>
       </form>
       {error && (
-        <>
+        <div className="error">
           <h3>Error</h3>
           <p>{error}</p>
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 }

@@ -39,9 +39,10 @@ function SignUpPage() {
   }, [navigate]);
 
   return (
-    <>
+    <div className="formPage">
+      <h2>Sign Up</h2>
       {isSubmitted && (
-        <h1>User signed up successfully. Redirecting to the login page.</h1>
+        <h3>User signed up successfully. Redirecting to the login page.</h3>
       )}
       {!isSubmitted && (
         <form action={signupAction}>
@@ -61,14 +62,18 @@ function SignUpPage() {
               <h3>Errors</h3>
               <ul>
                 {errors.map((error, i) => {
-                  return <li key={i}>{error.msg}</li>;
+                  return (
+                    <li className="disc" key={i}>
+                      {error.msg}
+                    </li>
+                  );
                 })}
               </ul>
             </div>
           )}
         </form>
       )}
-    </>
+    </div>
   );
 }
 

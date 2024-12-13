@@ -12,7 +12,7 @@ import Chat from "./Chat.jsx";
 import GroupChatForm from "./GroupChatForm.jsx";
 import GroupChat from "./GroupChat.jsx";
 import FunctionalWrapper from "./FunctionalWrapper.jsx";
-import FriendsPage from "./FriendsPage.jsx";
+import FriendRequests from "./FriendRequests.jsx";
 
 const routes = [
   {
@@ -30,7 +30,7 @@ const routes = [
       { path: "/chats/:contactUsername", element: <Chat /> },
       { path: "/chats/newGroupChat", element: <GroupChatForm /> },
       { path: "/groupChats/:chatId", element: <GroupChat /> },
-      { path: "/friends", element: <FriendsPage /> },
+      { path: "/friends", element: <FriendRequests /> },
     ],
   },
 ];

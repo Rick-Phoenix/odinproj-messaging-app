@@ -111,6 +111,7 @@ export async function fetchUserData(userId) {
               username: true,
               email: true,
               id: true,
+              pfpurl: true,
             },
           },
         },
@@ -284,6 +285,31 @@ export async function addMessage(userId, chatId, text) {
       userId,
       chatId,
       text,
+    },
+  });
+
+  return true;
+}
+
+export async function addMessageWithPic(userId, chatId, picUrl) {
+  const chat = await prisma.chat.findFirst({
+    where: {
+      id: chatId,
+      participants: {
+        some: {
+          id: userId,
+        },
+      },
+    },
+  });
+
+  if (!chat) return false;
+
+  const message = await prisma.message.create({
+    data: {
+      userId,
+      chatId,
+      picUrl,
     },
   });
 

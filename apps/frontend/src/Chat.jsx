@@ -7,6 +7,7 @@ import {
   UserContext,
 } from "../utils.js";
 import { IoIosSend } from "react-icons/io";
+import MsgInput from "./MsgInput.jsx";
 
 function getDateAndTime(string) {
   const splitStr = string.split("T");
@@ -91,7 +92,13 @@ export default function Chat() {
                         className={"msgPfp"}
                       />
                       <div className="msgGroup">
-                        <span className="msgText">{msg.text}</span>{" "}
+                        <span className="msgText">
+                          {msg.picUrl ? (
+                            <img src={msg.picUrl} className="msgPic" />
+                          ) : (
+                            msg.text
+                          )}
+                        </span>{" "}
                         <span className="msgTime">
                           {isBeforeToday
                             ? `${format(
@@ -106,21 +113,12 @@ export default function Chat() {
                 })}
               </ul>
             )}
-            <form className="msgInput" action={sendMessage}>
-              <input type="hidden" name="chatId" value={chat.id} />
-              <input
-                type="text"
-                name="message"
-                id="message"
-                autoFocus
-                disabled={isPending}
-                placeholder="Write a message..."
-                required
-              />
-              <button type="submit" disabled={isPending}>
-                <IoIosSend />
-              </button>
-            </form>
+            <MsgInput
+              isPending={isPending}
+              chatId={chat.id}
+              action={sendMessage}
+              setRefresh={setRefresh}
+            />
           </div>
         </div>
       )}

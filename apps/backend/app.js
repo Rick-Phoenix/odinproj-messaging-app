@@ -18,6 +18,7 @@ import {
   validateLogin,
   validateToken,
   chatPicUploadChain,
+  msgImageUploadChain,
 } from "./controllers/controllers.js";
 
 const app = express();
@@ -40,6 +41,7 @@ app.post("/user/profile", pfpUploadChain, createOrEditProfile);
 app.post("/user/chats/:contactUsername", newMessage);
 app.post("/user/groupChats", newGroupChat);
 app.post("/user/groupChats/:chatId", newMessage);
+app.post("/user/chats/:chatId/upload", msgImageUploadChain);
 
 app.put("/user/friendRequest/reject", rejectFriendRequest);
 app.put("/user/profile", pfpUploadChain, createOrEditProfile);

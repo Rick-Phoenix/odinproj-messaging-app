@@ -44,7 +44,9 @@ export default function ChatsList() {
                     alt={chatInfo.name}
                   />
                   <div className="chatTitle">{chatInfo.name}</div>
-                  <div className="lastMessage">{chat.messages[0]?.text}</div>
+                  <div className="lastMessage">
+                    {chat.messages[0].picUrl ? "Image" : chat.messages[0]?.text}
+                  </div>
                 </Link>
               </li>
             );

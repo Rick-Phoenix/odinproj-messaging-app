@@ -7,16 +7,20 @@ import { IoLogOut } from "react-icons/io5";
 import { TiThMenuOutline } from "react-icons/ti";
 import { LuMessageSquarePlus } from "react-icons/lu";
 import { FaUserFriends } from "react-icons/fa";
+import { IoIosLogIn } from "react-icons/io";
 import FriendsList from "./FriendsList.jsx";
+import { BsPersonFillUp } from "react-icons/bs";
 
 export default function FunctionalWrapper() {
-  const { userData, setRefresh } = use(UserContext);
+  const { userData, friends, setRefresh } = use(UserContext);
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const navigate = useNavigate();
 
   function handleLogout() {
     localStorage.removeItem("JWT");
-    navigate(0);
+    setRefresh(true);
+    setToggleSidebar(false);
+    navigate("/");
   }
 
   useEffect(() => {
@@ -48,12 +52,42 @@ export default function FunctionalWrapper() {
           }}
         >
           <img
+            className="logo"
             src="https://res.cloudinary.com/dqjizh49f/image/upload/v1733909857/Messaging%20App/poplogo.webp"
             alt="app logo"
           />
         </Link>
       </header>
       <Sidebar toggled={toggleSidebar}>
+        {!userData && (
+          <div className="sidebarTop">
+            <img
+              className="logo"
+              src="https://res.cloudinary.com/dqjizh49f/image/upload/v1733909857/Messaging%20App/poplogo.webp"
+              alt=""
+            />
+            <button
+              type="button"
+              className="icon"
+              onClick={() => {
+                navigate("/login");
+                setToggleSidebar(false);
+              }}
+            >
+              <IoIosLogIn /> Log In
+            </button>
+            <button
+              type="button"
+              className="icon"
+              onClick={() => {
+                navigate("/signup");
+                setToggleSidebar(false);
+              }}
+            >
+              <BsPersonFillUp /> Sign Up
+            </button>
+          </div>
+        )}
         {userData && (
           <>
             <div className="sidebarTop">
@@ -67,6 +101,7 @@ export default function FunctionalWrapper() {
                   navigate("/chats/newGroupChat");
                   setToggleSidebar(false);
                 }}
+                disabled={friends.length > 1}
               >
                 <LuMessageSquarePlus /> New Group Chat
               </button>
