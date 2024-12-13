@@ -48,50 +48,68 @@ export default function UserProfile() {
   if (!userData) return <></>;
 
   return (
-    <>
+    <div className="profilePanel">
       <h3>
         {!profile
-          ? "Create a profile"
+          ? "Create A Profile"
           : isEditing
-          ? "Edit profile"
+          ? "Edit Profile"
           : userData.username}
       </h3>
       <img className="pfp" src={userData.pfpurl} alt="" />
-      <h3>{responseMsg}</h3>
       {!isEditing && profile && (
-        <div>
-          Name: {profile.name}, Status: {profile.status}, Bio: {profile.bio}
+        <div className="profileInfo">
+          <div className="infoName">Name:</div>{" "}
+          <div className="infoContent">{profile.name}</div>
+          <div className="infoName">Status:</div>{" "}
+          <div className="infoContent">{profile.status}</div>
+          <div className="infoName">Bio:</div>{" "}
+          <div className="infoContent">{profile.bio}</div>
         </div>
       )}
       {(isEditing || !profile) && (
-        <form action={sendForm} method="post" encType="multipart/form-data">
-          <label htmlFor="pfp">Upload a new profile picture</label>
-          <input type="hidden" name="username" value={userData.username} />
-          <input type="file" name="pfp" accept=".png,.jpg,.jpeg,.webp" />
-          <label htmlFor="name">Name: </label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            defaultValue={profile ? profile.name : null}
-            required
-          />
-          <label htmlFor="status">Status: </label>
-          <input
-            type="text"
-            name="status"
-            id="status"
-            required
-            defaultValue={profile ? profile.status : null}
-          />
-          <label htmlFor="bio">Bio: </label>
-          <textarea
-            name="bio"
-            id="bio"
-            placeholder="Tell the world about yourself..."
-            defaultValue={profile ? profile.bio : null}
-          ></textarea>
+        <form
+          action={sendForm}
+          method="post"
+          encType="multipart/form-data"
+          className="profileInfo"
+        >
+          <div className="fileInput">
+            <label htmlFor="pfp">Upload a new profile picture</label>
+            <input type="hidden" name="username" value={userData.username} />
+            <input type="file" name="pfp" accept=".png,.jpg,.jpeg,.webp" />
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="name">Name: </label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              defaultValue={profile ? profile.name : null}
+              required
+            />
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="status">Status: </label>
+            <input
+              type="text"
+              name="status"
+              id="status"
+              required
+              defaultValue={profile ? profile.status : null}
+            />
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="bio">Bio: </label>
+            <textarea
+              name="bio"
+              id="bio"
+              placeholder="Tell the world about yourself..."
+              defaultValue={profile ? profile.bio : null}
+            ></textarea>
+          </div>
           <button type="submit">Save</button>
+          {responseMsg && <h3>{responseMsg}</h3>}
         </form>
       )}
       {!isEditing && profile && (
@@ -104,6 +122,6 @@ export default function UserProfile() {
           Edit
         </button>
       )}
-    </>
+    </div>
   );
 }

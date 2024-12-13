@@ -186,12 +186,14 @@ export async function fetchProfile(username) {
       username,
     },
     select: {
+      pfpurl: true,
       profile: true,
     },
   });
 
   if (!user) return false;
-  else return user.profile;
+  if (!user.profile) return null;
+  else return user;
 }
 
 export async function addOrEditProfile(userId, name, status, bio) {

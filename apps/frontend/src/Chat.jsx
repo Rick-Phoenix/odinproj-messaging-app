@@ -19,6 +19,7 @@ export default function Chat() {
   const { contactUsername } = useParams();
   const { userData } = use(UserContext);
   const [chat, setChat] = useState(null);
+  const [contact, setContact] = useState(null);
   const [refresh, setRefresh] = useState(true);
   const [state, sendMessage, isPending] = useActionState(
     async (previousState, formData) => {
@@ -32,12 +33,16 @@ export default function Chat() {
   console.log(chat);
 
   useEffect(() => {
+    if (contact !== contactUsername) {
+      setRefresh(true);
+    }
     if (refresh) {
       async function fetchData() {
         const response = await getRequestWithToken(
           `/user/chats/${contactUsername}`
         );
         if (response.ok) {
+          setContact(contactUsername);
           setRefresh(false);
           setChat(response.data);
         }
@@ -45,10 +50,9 @@ export default function Chat() {
 
       fetchData();
     }
-  }, [contactUsername, refresh]);
+  }, [contactUsername, refresh, contact]);
 
-  if (!chat) return <></>;
-  console.log(userData);
+  if (!chat || !userData || contactUsername !== contact) return <></>;
 
   const contactPfp = chat.participants.find(
     (user) => user.username === contactUsername

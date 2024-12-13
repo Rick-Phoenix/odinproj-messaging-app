@@ -34,6 +34,10 @@
   font-style: italic;
 }
 
+textarea {
+  resize: none;
+}
+
 a {
   color: inherit;
   text-decoration: inherit;
@@ -94,7 +98,7 @@ header {
 
 footer {
   height: 6vh;
-  margin-top: 2rem;
+  margin: 2rem;
 
   img {
     max-height: 100%;
@@ -507,4 +511,76 @@ input[type="file"]::file-selector-button:hover {
 
 input[type="file"]::file-selector-button:active {
   background-color: #e5e7eb;
+}
+
+.profilePanel {
+  display: flex;
+  flex-direction: column;
+  min-height: 40vh;
+  padding: 2rem;
+  border-radius: 18px;
+  background-color: #507772;
+  box-shadow: 0px 0px 4px 1px #2c4b3f;
+  border: 5px solid #4c7d67;
+  width: max(250px, 30%);
+
+  button,
+  textarea {
+    box-shadow: 0px 0px 4px 1px #2c4b3f;
+    border: 2px solid #4c7d67;
+  }
+
+  input:not([type="file"]) {
+    height: 1.5rem;
+    box-shadow: 0px 0px 4px 1px #2c4b3f;
+    border: 2px solid #4c7d67;
+  }
+
+  .profileInfo {
+    display: flex;
+    flex-direction: column;
+
+    .infoContent {
+      margin-top: 5px;
+      margin-bottom: 1rem;
+    }
+  }
+
+  form.profileInfo {
+    gap: 1rem;
+
+    label {
+      margin-bottom: 10px;
+    }
+
+    .inputGroup {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  h3 {
+    align-self: center;
+  }
+
+  img {
+    max-width: 60%;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    align-self: center;
+    box-shadow: 0px 0px 4px 1px #2c4b3f;
+    border: 2px solid #4c7d67;
+  }
+
+  button {
+    width: 30%;
+    align-self: center;
+  }
+
+  .fileInput {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
