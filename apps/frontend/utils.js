@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-import { createContext, useEffect, useState } from "react";
+import { createContext } from "react";
 
 export const apiUrl = import.meta.env.VITE_API_URL;
 

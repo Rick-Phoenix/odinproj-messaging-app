@@ -24,6 +24,11 @@ export function UserContextProvider({ children }) {
 
           const responseData = await response.json();
           responseData.chats.sort((chatA, chatB) => {
+            const chatAisEmpty = chatA.messages.length === 0;
+            const chatBisEmpty = chatB.messages.length === 0;
+            if (chatAisEmpty && chatBisEmpty) return 0;
+            if (chatAisEmpty && !chatBisEmpty) return 1;
+            if (!chatAisEmpty && chatBisEmpty) return -1;
             return (
               new Date(chatB.messages[0].sentAt).getTime() -
               new Date(chatA.messages[0].sentAt).getTime()

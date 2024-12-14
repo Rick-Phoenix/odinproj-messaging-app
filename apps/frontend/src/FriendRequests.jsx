@@ -16,7 +16,9 @@ export default function FriendRequests() {
       <AddFriend />
       <h3>Pending Requests: </h3>
       {requests.length === 0 && (
-        <span>There are no pending friend requests at the moment.</span>
+        <span className="feedbackMsg">
+          There are no incoming friend requests at the moment.
+        </span>
       )}
       {requests.length > 0 && (
         <>

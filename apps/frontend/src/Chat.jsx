@@ -71,7 +71,7 @@ export default function Chat() {
             <h3>{contactUsername}</h3>
           </Link>
           <div className="chatLayout">
-            {chat?.messages && (
+            {chat?.messages.length > 0 && (
               <ul className="messages">
                 {chat.messages.map((msg) => {
                   const { date, time } = getDateAndTime(msg.sentAt);

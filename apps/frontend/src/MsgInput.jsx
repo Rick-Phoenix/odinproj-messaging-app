@@ -46,18 +46,23 @@ export default function MsgInput({ isPending, chatId, action, setRefresh }) {
         onClick={() => {
           fileInputRef.current.click();
         }}
-        className={"imgSend"}
+        className={"imgSend send"}
       >
         <LuImagePlus />{" "}
         <input
           type="file"
           name="image"
           onChange={handleImageUpload}
+          accept=".png,.jpg,.jpeg,.webp"
           hidden
           ref={fileInputRef}
         />
       </button>
-      <button type="submit" disabled={isPending || !msgText}>
+      <button
+        type="submit"
+        className="msgSend send"
+        disabled={isPending || !msgText}
+      >
         <IoIosSend />
       </button>
     </form>

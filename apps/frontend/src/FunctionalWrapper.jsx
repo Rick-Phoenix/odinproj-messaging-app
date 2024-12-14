@@ -10,6 +10,7 @@ import { FaUserFriends } from "react-icons/fa";
 import { IoIosLogIn } from "react-icons/io";
 import FriendsList from "./FriendsList.jsx";
 import { BsPersonFillUp } from "react-icons/bs";
+import { BsX } from "react-icons/bs";
 
 export default function FunctionalWrapper() {
   const { userData, friends, setRefresh } = use(UserContext);
@@ -61,6 +62,15 @@ export default function FunctionalWrapper() {
       <Sidebar toggled={toggleSidebar}>
         {!userData && (
           <div className="sidebarTop">
+            <button
+              type="button"
+              onClick={() => {
+                setToggleSidebar(false);
+              }}
+              className="closeSidebar"
+            >
+              <BsX />
+            </button>
             <img
               className="logo"
               src="https://res.cloudinary.com/dqjizh49f/image/upload/v1733909857/Messaging%20App/poplogo.webp"
@@ -91,6 +101,15 @@ export default function FunctionalWrapper() {
         {userData && (
           <>
             <div className="sidebarTop">
+              <button
+                type="button"
+                className="closeSidebar"
+                onClick={() => {
+                  setToggleSidebar(false);
+                }}
+              >
+                <BsX />
+              </button>
               <h1>
                 Hello, <br /> {userData.username}!
               </h1>
@@ -101,7 +120,7 @@ export default function FunctionalWrapper() {
                   navigate("/chats/newGroupChat");
                   setToggleSidebar(false);
                 }}
-                disabled={friends.length > 1}
+                disabled={friends.length < 2}
               >
                 <LuMessageSquarePlus /> New Group Chat
               </button>

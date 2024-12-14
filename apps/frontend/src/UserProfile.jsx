@@ -68,49 +68,52 @@ export default function UserProfile() {
         </div>
       )}
       {(isEditing || !profile) && (
-        <form
-          action={sendForm}
-          method="post"
-          encType="multipart/form-data"
-          className="profileInfo"
-        >
-          <div className="fileInput">
-            <label htmlFor="pfp">Upload a new profile picture</label>
-            <input type="hidden" name="username" value={userData.username} />
-            <input type="file" name="pfp" accept=".png,.jpg,.jpeg,.webp" />
-          </div>
-          <div className="inputGroup">
-            <label htmlFor="name">Name: </label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              defaultValue={profile ? profile.name : null}
-              required
-            />
-          </div>
-          <div className="inputGroup">
-            <label htmlFor="status">Status: </label>
-            <input
-              type="text"
-              name="status"
-              id="status"
-              required
-              defaultValue={profile ? profile.status : null}
-            />
-          </div>
-          <div className="inputGroup">
-            <label htmlFor="bio">Bio: </label>
-            <textarea
-              name="bio"
-              id="bio"
-              placeholder="Tell the world about yourself..."
-              defaultValue={profile ? profile.bio : null}
-            ></textarea>
-          </div>
-          <button type="submit">Save</button>
-          {responseMsg && <h3>{responseMsg}</h3>}
-        </form>
+        <fieldset disabled={isPending}>
+          <form
+            action={sendForm}
+            method="post"
+            encType="multipart/form-data"
+            className="profileInfo"
+          >
+            <div className="fileInput">
+              <label htmlFor="pfp">Upload a new profile picture</label>
+              <input type="hidden" name="username" value={userData.username} />
+              <input type="file" name="pfp" accept=".png,.jpg,.jpeg,.webp" />
+            </div>
+            <div className="inputGroup">
+              <label htmlFor="name">Name: </label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                defaultValue={profile ? profile.name : null}
+                required
+              />
+            </div>
+            <div className="inputGroup">
+              <label htmlFor="status">Status: </label>
+              <input
+                type="text"
+                name="status"
+                id="status"
+                required
+                defaultValue={profile ? profile.status : null}
+              />
+            </div>
+            <div className="inputGroup">
+              <label htmlFor="bio">Bio: </label>
+              <textarea
+                name="bio"
+                id="bio"
+                placeholder="Tell the world about yourself..."
+                defaultValue={profile ? profile.bio : null}
+              ></textarea>
+            </div>
+            <button type="submit">Save</button>
+
+            {responseMsg && <h3>{responseMsg}</h3>}
+          </form>
+        </fieldset>
       )}
       {!isEditing && profile && (
         <button

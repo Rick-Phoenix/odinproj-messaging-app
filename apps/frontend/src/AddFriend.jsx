@@ -4,6 +4,7 @@ import { IoPersonAdd } from "react-icons/io5";
 
 export default function AddFriend() {
   const [feedbackMsg, setFeedbackMsg] = useState(null);
+  const [inputText, setInputText] = useState(null);
   const [state, addFriendAction, isPending] = useActionState(async function (
     previousState,
     formData
@@ -13,6 +14,7 @@ export default function AddFriend() {
       "/user/friendRequest/new"
     );
     setFeedbackMsg(response.msg);
+    setInputText(null);
     return response;
   },
   null);
@@ -27,15 +29,21 @@ export default function AddFriend() {
           id="email"
           required
           disabled={isPending}
-          onChange={() => {
+          value={inputText}
+          onChange={(e) => {
             if (feedbackMsg) setFeedbackMsg(null);
+            setInputText(e.target.value);
           }}
         />
-        <button type="submit" disabled={isPending}>
+        <button
+          type="submit"
+          className="round"
+          disabled={isPending || !inputText}
+        >
           <IoPersonAdd />
         </button>
       </div>
-      <h4>{feedbackMsg}</h4>
+      {feedbackMsg && <h4>{feedbackMsg}</h4>}
     </form>
   );
 }

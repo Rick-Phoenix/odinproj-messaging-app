@@ -83,7 +83,9 @@ export default function GroupChat() {
         />
         <form action={updatePicUrl} method="post" encType="multipart/form-data">
           <input type="hidden" name="chatId" value={chatId} />
-          <label htmlFor="chatPic">Upload a new chat picture</label>
+          <label htmlFor="chatPic">
+            <h3>Upload a new chat picture</h3>
+          </label>
           <input
             type="file"
             name="chatPic"
