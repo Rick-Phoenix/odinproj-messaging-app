@@ -6,14 +6,12 @@ import {
   postRequestWithToken,
   UserContext,
 } from "../utils.js";
-import { IoIosSend } from "react-icons/io";
 import MsgInput from "./MsgInput.jsx";
 
 function getDateAndTime(string) {
   const splitStr = string.split("T");
   const date = splitStr[0];
-  const time = splitStr[1].split(".")[0];
-  return { date, time };
+  return date;
 }
 
 export default function Chat() {
@@ -30,8 +28,6 @@ export default function Chat() {
     },
     null
   );
-
-  console.log(chat);
 
   useEffect(() => {
     if (contact !== contactUsername) {
@@ -74,7 +70,7 @@ export default function Chat() {
             {chat?.messages.length > 0 && (
               <ul className="messages">
                 {chat.messages.map((msg) => {
-                  const { date, time } = getDateAndTime(msg.sentAt);
+                  const date = getDateAndTime(msg.sentAt);
                   const today = new Date().toISOString().split("T")[0];
                   const isBeforeToday = new Date(date) < new Date(today);
                   const isFromUser = msg.user.username === userData.username;

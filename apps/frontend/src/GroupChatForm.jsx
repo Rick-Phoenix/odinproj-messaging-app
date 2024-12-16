@@ -24,7 +24,7 @@ export default function GroupChatForm() {
 
   return (
     <div className="groupChat panel">
-      <h3>New Group Chat</h3>
+      <h3 className="panelHeader">New Group Chat</h3>
       {friends && (
         <form action={submitForm}>
           <fieldset disabled={isPending}>
@@ -32,7 +32,7 @@ export default function GroupChatForm() {
               <label htmlFor="name">Chat name:</label>
               <input type="text" name="name" id="name" required />
             </div>
-            <h3>Friends</h3>
+            <h3 className="panelHeader">Select Friends</h3>
             <ul className="friendsList">
               {friends.map((friend) => {
                 return (
@@ -57,7 +57,7 @@ export default function GroupChatForm() {
             </ul>
             <button type="submit">Create Chat</button>
           </fieldset>
-          {error && <h3>{error}</h3>}
+          {error && <h3 className="panelHeader error">{error}</h3>}
         </form>
       )}
     </div>

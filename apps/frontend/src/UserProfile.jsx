@@ -1,15 +1,9 @@
 import { use, useActionState, useEffect, useState } from "react";
-import {
-  apiUrl,
-  getToken,
-  postRequestWithToken,
-  putRequestWithToken,
-  UserContext,
-} from "../utils.js";
+import { apiUrl, getToken, UserContext } from "../utils.js";
 import { useNavigate } from "react-router-dom";
 
 export default function UserProfile() {
-  const { userData, setRefresh } = use(UserContext);
+  const { userData } = use(UserContext);
   const [profile, setProfile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
@@ -59,12 +53,18 @@ export default function UserProfile() {
       <img className="pfp" src={userData.pfpurl} alt="" />
       {!isEditing && profile && (
         <div className="profileInfo">
-          <div className="infoName">Name:</div>{" "}
-          <div className="infoContent">{profile.name}</div>
-          <div className="infoName">Status:</div>{" "}
-          <div className="infoContent">{profile.status}</div>
-          <div className="infoName">Bio:</div>{" "}
-          <div className="infoContent">{profile.bio}</div>
+          <div className="infoName">
+            <h4 className="panelHeader">Name</h4>
+          </div>{" "}
+          <div className="infoContent panelText">{profile.name}</div>
+          <div className="infoName">
+            <h4 className="panelHeader">Status</h4>
+          </div>{" "}
+          <div className="infoContent panelText">{profile.status}</div>
+          <div className="infoName">
+            <h4 className="panelHeader">Bio</h4>
+          </div>{" "}
+          <div className="infoContent panelText">{profile.bio}</div>
         </div>
       )}
       {(isEditing || !profile) && (
@@ -109,7 +109,17 @@ export default function UserProfile() {
                 defaultValue={profile ? profile.bio : null}
               ></textarea>
             </div>
-            <button type="submit">Save</button>
+            <div className="btnGroup">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsEditing(false);
+                }}
+              >
+                Cancel
+              </button>
+              <button type="submit">Save</button>
+            </div>
 
             {responseMsg && <h3>{responseMsg}</h3>}
           </form>
@@ -118,6 +128,7 @@ export default function UserProfile() {
       {!isEditing && profile && (
         <button
           type="button"
+          className="edit"
           onClick={() => {
             setIsEditing(true);
           }}

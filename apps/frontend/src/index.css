@@ -1,21 +1,23 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Roboto, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
+
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1);
 
   height: 100%;
 
   --background: hsl(173, 49%, 59%);
   --base-contrast: #85b3ab;
   --mid-contrast: #4c7d67;
-  --darker-contrast: hsl(179 26% 27% / 1);
-  --darkest-contrast: hsl(179 26% 16% / 1);
+  --darker-contrast: hsl(175 25% 25% / 1);
+  --darkest-contrast: hsl(175 27% 16% / 1);
 
   --light-border: 3px hsl(169 23% 47% / 1) solid;
 
   --dark-border: #507772;
 
   --container-shadow: 0px 0px 5px 4px hsl(156 32% 21% / 1);
-  --chat-shadow: 0px 0px 6px 4px hsl(156 32% 14% / 1);
+  --chat-shadow: 0px 0px 6px 3px hsl(156 32% 14% / 1);
   --inset-shadow-larger: inset 0px 1px 5px 5px hsl(147 11% 20% / 1);
 
   --text-shadow: 1px 0px 31px #13251d;
@@ -23,8 +25,8 @@
 
   --large-pic-shadow: 0px 0px 11px 0px hsl(157 52% 5% / 1);
 
-  --button-inactive: hsl(148 50% 12% / 1);
-  --button-active: hsl(148 100% 6% / 1);
+  --button-inactive: hsl(165 35% 12% / 1);
+  --button-active: hsl(165 85% 2% / 1);
 
   color-scheme: light dark;
   color: white;
@@ -34,6 +36,13 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 2rem;
 }
 
 @font-face {
@@ -62,7 +71,8 @@ a:hover {
 
 input[type="text"],
 input[type="password"],
-input[type="email"] {
+input[type="email"],
+textarea {
   padding: 0.8rem;
   border-radius: 5px;
   background-color: #0a1614;
@@ -99,7 +109,8 @@ button {
   }
 
   &:focus,
-  &:hover {
+  &:hover,
+  &:active {
     background-color: var(--button-active);
   }
 
@@ -210,6 +221,30 @@ header {
   align-items: center;
   gap: 1rem;
 
+  .textGradient {
+    color: transparent;
+    background: rgb(0, 255, 121);
+    background: linear-gradient(
+      180deg,
+      rgba(0, 255, 121, 1) 33%,
+      rgba(250, 232, 0, 1) 66%,
+      rgba(255, 91, 0, 1) 100%
+    );
+    background-clip: text;
+  }
+
+  h1 {
+    -webkit-text-stroke: 1px hsl(0, 0%, 0%, 0.8);
+    margin: 0;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
   button {
     display: flex;
     align-items: center;
@@ -233,6 +268,43 @@ footer {
   }
 }
 
+.carousel {
+  width: 500px;
+  height: max-content;
+
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    height: auto;
+
+    p {
+      text-shadow: var(--header-text-shadow);
+      padding: 0 4rem;
+    }
+
+    h2 {
+      margin: 4rem;
+      margin-bottom: 0;
+      text-shadow: var(--header-text-shadow);
+      border-radius: 10px;
+    }
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 500px;
+  }
+}
+
+@media (max-width: 500px) {
+  .carousel {
+    width: 350px;
+  }
+}
+
 .friendRequests {
   display: flex;
   flex-direction: column;
@@ -246,6 +318,9 @@ footer {
 
   h3 {
     text-shadow: var(--header-text-shadow);
+    margin: 1rem;
+    padding: 10px;
+    border-radius: 5px;
   }
 
   label,
@@ -268,6 +343,7 @@ footer {
     .inputGroup {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 1rem;
     }
   }
@@ -383,7 +459,7 @@ h1 {
     border: 2px solid #4c7d67;
 
     &:hover {
-      box-shadow: 0px 0px 6px 0px #12392a;
+      box-shadow: 0px 0px 11px 2px hsl(157 52% 5% / 1);
     }
   }
 
@@ -459,7 +535,7 @@ h1 {
       border: 2px solid #4c7d67;
 
       &:hover {
-        box-shadow: 0px 0px 6px 0px #12392a;
+        box-shadow: 0px 0px 11px 2px hsl(157 52% 5% / 1);
       }
     }
   }
@@ -475,7 +551,7 @@ h1 {
 }
 
 .feedbackMsg {
-  font-weight: 200;
+  font-weight: 300;
 }
 
 .groupChat.panel {
@@ -496,6 +572,12 @@ h1 {
 
   h3 {
     text-shadow: var(--header-text-shadow);
+    padding: 10px;
+    border-radius: 5px;
+
+    &.error {
+      margin: 2rem;
+    }
   }
 
   .inputGroup {
@@ -597,8 +679,8 @@ ul.chats {
       max-height: 100%;
       grid-row: 1 /3;
       border-radius: 50%;
-      box-shadow: 0px 0px 6px 0px #12392a;
-      border: 3px solid #4c7d67;
+      box-shadow: var(--large-pic-shadow);
+      border: 4px solid #4c7d67;
       transition: transform 0.5s;
     }
 
@@ -614,12 +696,12 @@ ul.chats {
     .chatTitle {
       align-self: end;
       font-weight: bold;
-      font-size: 1.1em;
+      font-size: 1.2em;
     }
 
     .lastMessage {
       align-self: start;
-      font-size: 0.8em;
+      font-size: 0.9em;
       font-weight: 300;
       color: #e2e2e2;
       grid-row: 2/3;
@@ -656,7 +738,7 @@ ul.chats {
 
 .chatContainer {
   border-radius: 20px;
-  background-color: #85b3ab;
+  background-color: hsl(166 20% 56% / 1);
   box-shadow: var(--container-shadow);
   border: 2px solid #507772;
   width: max(330px, 30%);
@@ -726,6 +808,7 @@ ul.chats {
           box-shadow: var(--chat-shadow);
           gap: 1px;
           text-shadow: var(--text-shadow);
+          -webkit-text-stroke: 0;
         }
 
         .msgPic {
@@ -743,14 +826,14 @@ ul.chats {
 
         .msgTime {
           font-weight: 200;
-          font-size: 7px;
+          font-size: 0.6em;
           align-self: start;
         }
 
         .msgText {
           align-self: end;
-          font-size: 13px;
           font-weight: 300;
+          font-size: 0.9em;
         }
       }
 
@@ -897,6 +980,20 @@ input[type="file"]::file-selector-button:active {
   background-color: #e5e7eb;
 }
 
+.panelHeader {
+  background: hsl(165deg 100% 4% / 80%);
+  border-radius: 5px 5px 0 0;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+.panelText {
+  background: hsl(170deg 35% 13% / 90%);
+  padding: 10px;
+  border-radius: 0 0 5px 5px;
+  margin-bottom: 2rem;
+}
+
 .profilePanel {
   display: flex;
   flex-direction: column;
@@ -907,11 +1004,23 @@ input[type="file"]::file-selector-button:active {
   box-shadow: var(--inset-shadow-larger);
   border: 3px solid var(--base-contrast);
   width: max(250px, 30%);
+  text-shadow: var(--text-shadow);
+
+  button.edit {
+    margin-top: 2rem;
+  }
+
+  h4 {
+    text-shadow: var(--header-text-shadow);
+  }
 
   h3 {
     text-shadow: var(--header-text-shadow);
     font-weight: 900;
     font-size: x-large;
+    padding: 10px;
+    background: hsl(165deg 100% 4% / 80%);
+    border-radius: 5px;
   }
 
   button,
@@ -933,11 +1042,7 @@ input[type="file"]::file-selector-button:active {
   .profileInfo {
     display: flex;
     flex-direction: column;
-
-    .infoContent {
-      margin-top: 5px;
-      margin-bottom: 1rem;
-    }
+    text-align: center;
   }
 
   form.profileInfo {
@@ -945,6 +1050,13 @@ input[type="file"]::file-selector-button:active {
 
     label {
       margin-bottom: 10px;
+    }
+
+    .btnGroup {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 10px;
     }
 
     .inputGroup {

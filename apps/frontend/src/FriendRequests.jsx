@@ -12,9 +12,9 @@ export default function FriendRequests() {
 
   return (
     <div className="friendRequests panel">
-      <h3>Add A Friend</h3>
+      <h3 className="panelHeader">Add A Friend</h3>
       <AddFriend />
-      <h3>Pending Requests: </h3>
+      <h3 className="panelHeader">Pending Requests: </h3>
       {requests.length === 0 && (
         <span className="feedbackMsg">
           There are no incoming friend requests at the moment.

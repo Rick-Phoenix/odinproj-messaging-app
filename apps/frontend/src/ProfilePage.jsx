@@ -34,12 +34,18 @@ export default function ProfilePage() {
       <h3>{username}</h3>
       <img className="pfp" src={pfpurl} alt="" />
       <div className="profileInfo">
-        <div className="infoName">Name:</div>{" "}
-        <div className="infoContent">{profile.name}</div>
-        <div className="infoName">Status:</div>{" "}
-        <div className="infoContent">{profile.status}</div>
-        <div className="infoName">Bio:</div>{" "}
-        <div className="infoContent">{profile.bio}</div>
+        <div className="infoName">
+          <h4 className="panelHeader">Name</h4>
+        </div>{" "}
+        <div className="infoContent panelText">{profile.name}</div>
+        <div className="infoName">
+          <h4 className="panelHeader">Status</h4>
+        </div>{" "}
+        <div className="infoContent panelText">{profile.status}</div>
+        <div className="infoName">
+          <h4 className="panelHeader">Bio</h4>
+        </div>{" "}
+        <div className="infoContent panelText">{profile.bio}</div>
       </div>
     </div>
   );

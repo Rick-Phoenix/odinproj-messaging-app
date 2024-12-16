@@ -8,7 +8,6 @@ import {
   postRequestWithToken,
   UserContext,
 } from "../utils.js";
-import { IoIosSend } from "react-icons/io";
 import MsgInput from "./MsgInput.jsx";
 
 function getDateAndTime(string) {
@@ -50,8 +49,6 @@ export default function GroupChat() {
     },
     null
   );
-
-  console.log(chat);
 
   useEffect(() => {
     if (refresh) {
